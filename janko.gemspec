@@ -28,5 +28,5 @@ Gem::Specification.new do |spec|
     spec.add_development_dependency 'ruby_gntp', '~> 0'
     spec.add_development_dependency 'simplecov', '~> 0'
     spec.add_development_dependency 'pry', '~> 0'
-    spec.add_development_dependency 'activerecord', '~> 4.1', '> 4.1'
+    spec.add_development_dependency 'activerecord', '~> 5.0', '> 5.0'
 end

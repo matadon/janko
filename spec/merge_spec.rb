@@ -61,16 +61,16 @@ RSpec.shared_examples_for "a merger" do
         it "defaults to everything but id" do
             merge.start.push(row).stop
             expect(results.count).to eq(1)
-            expect(results.first["id"]).to eq("1")
+            expect(results.first["id"]).to eq(1)
             expect(results.first["title"]).to eq(row[:title])
             expect(results.first["content"]).to eq(row[:content])
-            expect(results.first["user_id"]).to eq(row[:user_id].to_s)
+            expect(results.first["user_id"]).to eq(row[:user_id])
         end
 
         it "specific fields only" do
             merge.insert(:title).start.push(row).stop
             expect(results.count).to eq(1)
-            expect(results.first["id"]).to eq("1")
+            expect(results.first["id"]).to eq(1)
             expect(results.first["title"]).to eq(row[:title])
             expect(results.first["content"]).to be_nil
             expect(results.first["user_id"]).to be_nil
@@ -93,7 +93,7 @@ RSpec.shared_examples_for "a merger" do
                 merge.insert(:id)
                 merge.alter(:id) { |f| f.default(Janko::DEFAULT) }
                 merge.start.push(id: nil).stop
-                expect(results.first["id"]).to eq("1")
+                expect(results.first["id"]).to eq(1)
             end
 
             it "#default keep existing ignored" do
@@ -130,7 +130,7 @@ RSpec.shared_examples_for "a merger" do
                 merge.insert(:votes)
                 merge.alter(:votes) { |f| f.wrap("3") }
                 merge.start.push(votes: "42").stop
-                expect(results.first["votes"]).to eq("3")
+                expect(results.first["votes"]).to eq(3)
             end
         end
     end
@@ -142,7 +142,7 @@ RSpec.shared_examples_for "a merger" do
             merge.start.push(original).stop
             merge.start.push(update).stop
             expect(results.count).to eq(1)
-            expect(results.first["id"]).to eq("1")
+            expect(results.first["id"]).to eq(1)
             expect(results.first["title"]).to eq(update[:title])
         end
 
@@ -167,7 +167,7 @@ RSpec.shared_examples_for "a merger" do
             expect(results.count).to eq(2)
             expect(results.first["content"]).to eq(update[:content])
             expect(results.last["content"]).to eq(keep[:content])
-            expect(results.last["user_id"]).to eq(keep[:user_id].to_s)
+            expect(results.last["user_id"]).to eq(keep[:user_id])
         end
     end
 
@@ -181,7 +181,7 @@ RSpec.shared_examples_for "a merger" do
         it "defaults to everything but id" do
             merge.start.push(update).stop
             expect(results.count).to eq(1)
-            expect(results.first["id"]).to eq("1")
+            expect(results.first["id"]).to eq(1)
             expect(results.first["title"]).to eq(update[:title])
             expect(results.first["content"]).to eq(update[:content])
             expect(results.first["user_id"]).to be_nil
@@ -208,7 +208,7 @@ RSpec.shared_examples_for "a merger" do
                 merge.alter(:votes) { |f| f.default("round(3.14)") }
                 merge.start.push(update).stop
                 expect(results.count).to eq(1)
-                expect(results.first["votes"]).to eq("3")
+                expect(results.first["votes"]).to eq(3)
             end
 
             it "#default from database" do
@@ -216,7 +216,7 @@ RSpec.shared_examples_for "a merger" do
                 merge.alter(:votes) { |f| f.default(Janko::DEFAULT) }
                 merge.start.push(update).stop
                 expect(results.count).to eq(1)
-                expect(results.first["votes"]).to eq("0")
+                expect(results.first["votes"]).to eq(0)
             end
 
             it "#default keep existing" do
@@ -253,7 +253,7 @@ RSpec.shared_examples_for "a merger" do
                 merge.update(:title, :votes)
                 merge.alter(:votes) { |f| f.on_update("$OLD + 1") }
                 merge.start.push(update).stop
-                expect(results.first["votes"]).to eq("2")
+                expect(results.first["votes"]).to eq(2)
             end
         end
 
@@ -321,16 +321,16 @@ RSpec.shared_examples_for "a merger" do
         end
 
         it "all columns by default" do
-            expect(inserted["id"]).to eq("1")
+            expect(inserted["id"]).to eq(1)
             expect(inserted["title"]).to eq(record[:title])
             expect(inserted["content"]).to eq(record[:content])
-            expect(inserted["user_id"]).to eq(record[:user_id].to_s)
+            expect(inserted["user_id"]).to eq(record[:user_id])
         end
 
         it "select columns" do
             merge.select(:id, :title)
             expect(inserted.count).to eq(2)
-            expect(inserted["id"]).to eq("1")
+            expect(inserted["id"]).to eq(1)
             expect(inserted["title"]).to eq(record[:title])
         end
     end
